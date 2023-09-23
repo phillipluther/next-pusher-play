@@ -1,13 +1,21 @@
-import Pusher from 'pusher-js';
+import Pusher from 'pusher';
 
-const channels = new Pusher('1e27ccd9c9f02d89f97b', {
-  cluster: 'us3',
+const {
+  APP_ID: appId,
+  KEY: key,
+  SECRET: secret,
+  CLUSTER: cluster,
+} = process.env;
+
+const channels = new Pusher({
+  appId,
+  key,
+  secret,
+  cluster,
 });
 
-const channel = channels.subscribe('private-channel-name');
-
 export async function POST(req: Request) {
-  channel.trigger('client-event-name', { message: 'Ok!' });
+  channels.trigger('channel-test-connect', 'event-test-receipt', { message: 'Ok!' });
 
   return new Response(JSON.stringify({ message: 'Event sent' }), {
     status: 200,

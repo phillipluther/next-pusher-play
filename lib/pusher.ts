@@ -6,10 +6,11 @@ export function initPusher() {
   });
 
   // channels get created when needed; any name will work
-  const channel = channels.subscribe('private-channel-name');
+  const channel = channels.subscribe('channel-test-connect');
 
-  channel.bind('client-event-name', function (data: unknown) {
+  channel.bind('event-test-receipt', function (data: unknown) {
     console.log('Pusher event received', data)
+    alert('Got it!');
   });
 
   console.log('Pusher initialized');

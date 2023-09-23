@@ -5,20 +5,7 @@ import { useEffect, useCallback } from 'react';
 import { initPusher, pushData } from '@/lib/pusher';
 
 export default function Home() {
-  const sub = useCallback(() => {
-    const channels = new Pusher('1e27ccd9c9f02d89f97b', {
-      cluster: 'us3',
-    });
-  
-    // channels get created when needed; any name will work
-    const channel = channels.subscribe('private-channel-name');
-  
-    channel.bind('event-name', function (data: unknown) {
-      console.log('Pusher event received', data)
-    });
-  
-    console.log('Pusher initialized');
-  }, []);
+  const sub = useCallback(initPusher, []);
 
   function relayData() {
     pushData({
@@ -30,11 +17,11 @@ export default function Home() {
   useEffect(sub);
 
   return (
-    <main>
-      <h1>Next+Pusher POC</h1>
+    <main className="max-w-xl mx-auto p-12">
+      <h1 className="text-4xl font-bold mb-4">Next+Pusher POC</h1>
       <p>A little RTC experiment getting Next.js and Pusher to make nice.</p>
 
-      <hr />
+      <hr className="mt-8 mb-4" />
 
       <button className="px-4 py-2 bg-blue-500 text-white rounded" onClick={relayData}>
         Push Data!
