@@ -12,7 +12,7 @@ const channels = new Pusher({
   key,
   secret,
   cluster,
-});
+} as Pusher.Options);
 
 export async function POST(req: Request) {
   channels.trigger('channel-test-connect', 'event-test-receipt', { message: 'Ok!' });
