@@ -1,7 +1,7 @@
 import Pusher from 'pusher-js';
 
 export function initPusher() {
-  const channels = new Pusher('1e27ccd9c9f02d89f97b', {
+  const channels = new Pusher('cd14d343b34bcf4ff3ee', {
     cluster: 'us3',
   });
 
