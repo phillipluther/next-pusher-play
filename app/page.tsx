@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useCallback, useState } from 'react';
-import { initPusher, pushData } from '@/lib/pusher';
+import { usePusher, pushData } from '@/lib/pusher';
 
 export type Message = {
   message: string,
@@ -9,13 +9,14 @@ export type Message = {
 };
 
 export default function Home() {
+  const pusher = usePusher();
   const [messages, updateMessages] = useState<Message[]>([]);
 
-  const subscribe = useCallback(() => {
-    initPusher((message: Message) => {
-      updateMessages((messages) => [...messages, message]);
+  pusher
+    .subscribe('channel-test-connect')
+    .bind('event-test-receipt', function (data: unknown) {
+      // console.log('DATA', data);
     });
-  }, []);
 
   function relayData(message: string) {
     pushData({
@@ -24,7 +25,7 @@ export default function Home() {
     });
   }
 
-  useEffect(subscribe);
+  // useEffect(subscribe);
 
   return (
     <main className="max-w-xl mx-auto p-12">

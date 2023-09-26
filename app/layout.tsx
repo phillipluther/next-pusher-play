@@ -1,5 +1,6 @@
 import './globals.css';
 import type { Metadata } from 'next';
+import PusherProvider from '@/lib/pusher';
 
 export const metadata: Metadata = {
   title: 'Next+Pusher POC',
@@ -14,8 +15,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {children}
+        <PusherProvider>{children}</PusherProvider>
       </body>
     </html>
-  )
+  );
 }
