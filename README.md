@@ -1,10 +1,5 @@
 # Next+Pusher POC
 
-> A little RTC experiment getting Next.js and Pusher to make nice.
+A little RTC experiment using Next.js and Pusher. Main motivation was connecting Next's page and API routes with the Pusher socket/channel offering.
 
-## Stack
-
-* Next.js for the full-stack React framework
-* Pusher for real'ish time events
-* Vercel for the hosting and deployment
-
+Unimpressive demo at [https://next-pusher-play.vercel.app/](https://next-pusher-play.vercel.app/).

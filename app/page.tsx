@@ -1,20 +1,30 @@
 'use client';
 
-import Pusher from 'pusher-js';
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import { initPusher, pushData } from '@/lib/pusher';
 
-export default function Home() {
-  const sub = useCallback(initPusher, []);
+export type Message = {
+  message: string,
+  timestamp: string,
+};
 
-  function relayData() {
+export default function Home() {
+  const [messages, updateMessages] = useState<Message[]>([]);
+
+  const subscribe = useCallback(() => {
+    initPusher((message: Message) => {
+      updateMessages((messages) => [...messages, message]);
+    });
+  }, []);
+
+  function relayData(message: string) {
     pushData({
-      message: 'Hello, world!',
+      message,
       timestamp: Date.now(),
     });
   }
 
-  useEffect(sub);
+  useEffect(subscribe);
 
   return (
     <main className="max-w-xl mx-auto p-12">
@@ -23,9 +33,40 @@ export default function Home() {
 
       <hr className="mt-8 mb-4" />
 
-      <button className="px-4 py-2 bg-blue-500 text-white rounded" onClick={relayData}>
-        Push Data!
-      </button>
+      <form onSubmit={(e) => {
+        e.preventDefault();
+
+        const target = e.target as unknown as Array<HTMLInputElement>;
+        const inputField = target[0];
+
+        relayData(inputField.value);
+      }}>
+        <label htmlFor="message" className="block mb-2">Message</label>
+        <input
+          id="message"
+          type="text"
+          className="border border-gray-300 rounded px-4 py-2 text-black"
+          placeholder="Message"
+        />
+
+        <button
+          type="submit"
+          className="px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          Send Message
+        </button>
+      </form>
+
+      <hr className="mt-8 mb-4" />
+
+      <h2 className="text-xl font-bold mb-4">Messages Sent</h2>
+      <ul>
+        {messages.map((message) => (
+          <li key={message.timestamp}>
+            {message.message} at {message.timestamp}
+          </li>
+        ))}
+      </ul>
     </main>
   );
 }

@@ -1,6 +1,6 @@
 import Pusher from 'pusher-js';
 
-export function initPusher() {
+export function initPusher(onMessage: Function = () => undefined) {
   const channels = new Pusher('cd14d343b34bcf4ff3ee', {
     cluster: 'us3',
   });
@@ -9,8 +9,8 @@ export function initPusher() {
   const channel = channels.subscribe('channel-test-connect');
 
   channel.bind('event-test-receipt', function (data: unknown) {
-    console.log('Pusher event received', data)
-    alert('Got it!');
+    console.log('Pusher event received', data);
+    onMessage(data);
   });
 
   console.log('Pusher initialized');
