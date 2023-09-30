@@ -15,9 +15,10 @@ const channels = new Pusher({
 } as Pusher.Options);
 
 export async function POST(req: Request) {
-  channels.trigger('channel-test-connect', 'event-test-receipt', { message: 'Ok!' });
+  const data = await req.json();
+  channels.trigger('channel-test-connect', 'event-test-receipt', data);
 
-  return new Response(JSON.stringify({ message: 'Event sent' }), {
+  return new Response(JSON.stringify({ message: 'Event sent', data }), {
     status: 200,
   });
 }

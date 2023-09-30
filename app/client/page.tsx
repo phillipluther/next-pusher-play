@@ -1,12 +1,19 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useCallback } from 'react';
-import { initPusher, pushData } from '@/lib/pusher';
+import { useState } from 'react';
+import { usePusher } from '@/lib/pusher';
+import type { Message } from '@/app/page';
 
 export default function Client() {
-  const subscribe = useCallback(initPusher, []);
-  useEffect(subscribe);
+  const pusher = usePusher();
+  const [messages, updateMessages] = useState<Message[]>([]);
+
+  pusher
+    .subscribe('channel-test-connect')
+    .bind('event-test-receipt', function (data: Message) {
+      updateMessages([...messages, data]);
+    });
 
   return (
     <main className="max-w-xl mx-auto p-12">
@@ -15,6 +22,11 @@ export default function Client() {
 
       <hr className="mt-8 mb-4" />
 
+      <ul>
+        {messages.map((message) => (
+          <li key={message.timestamp}>{message.message}:: {message.timestamp}</li>
+        ))}
+      </ul>
     </main>
   );
 }

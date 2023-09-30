@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useCallback, useState } from 'react';
+import { useState } from 'react';
 import { usePusher, pushData } from '@/lib/pusher';
 
 export type Message = {
@@ -14,8 +14,8 @@ export default function Home() {
 
   pusher
     .subscribe('channel-test-connect')
-    .bind('event-test-receipt', function (data: unknown) {
-      // console.log('DATA', data);
+    .bind('event-test-receipt', function (data: Message) {
+      updateMessages([...messages, data]);
     });
 
   function relayData(message: string) {
@@ -25,12 +25,15 @@ export default function Home() {
     });
   }
 
-  // useEffect(subscribe);
-
   return (
     <main className="max-w-xl mx-auto p-12">
       <h1 className="text-4xl font-bold mb-4">Next+Pusher POC</h1>
       <p>A little RTC experiment getting Next.js and Pusher to make nice.</p>
+      <p>
+        Open {``}
+        <a href="/client" target="_blank" className="text-pink-400">this link</a>{` `}
+        in another browser/tab and witness the communicative glory.
+      </p>
 
       <hr className="mt-8 mb-4" />
 
